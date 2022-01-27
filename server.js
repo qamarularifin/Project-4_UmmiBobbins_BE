@@ -8,11 +8,12 @@ const CORS_WHITELIST = process.env.CORS_WHITELIST.split(',')
 
 
 //app.use(cors())
-app.use(express.json());
-
 app.use(cors({
   origin: CORS_WHITELIST
 }));
+app.use(express.json());
+
+
 
 
 // const
