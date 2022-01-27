@@ -3,11 +3,16 @@ const app = express();
 const mongoose = require('mongoose')
 const cors = require("cors")
 require('dotenv').config();
+const CORS_WHITELIST = process.env.CORS_WHITELIST.split(',')
 
 
 
-app.use(cors())
+//app.use(cors())
 app.use(express.json());
+
+app.use(cors({
+  origin: CORS_WHITELIST
+}));
 
 
 // const
