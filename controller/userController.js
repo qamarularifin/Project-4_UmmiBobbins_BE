@@ -119,6 +119,19 @@ router.post("/dashboard", async(req,res)=>{
 })
 
 // update user profile
+router.put("/:id/update", async (req, res) => {
+    let updatedUser;
+    try {
+      updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+      });
+    } catch (err) {
+      res.status(400).send({ message: "Invalid request body" });
+    }
+    res.send(updatedUser);
+  });
+
+// update user profile
 // router.put("/update/:id", async (req,res) =>{
 //     const { id } = req.params;
 //     const user = await User.findById(id)
