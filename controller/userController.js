@@ -27,7 +27,9 @@ router.post("/signup", async(req,res)=>{
         await User.create({
             name: req.body.name,
             email: req.body.email,
-            password: newPassword
+            password: newPassword,
+            role: req.body.role
+
         });
         res.json({status: "ok"})
         //res.send(user)
