@@ -72,7 +72,7 @@ router.post("/login", async(req,res)=>{
 
 
 // use this get request to render (permanent) fields in the dashboard
-router.get("/quote", async(req,res)=>{
+router.get("/dashboard", async(req,res)=>{
    
     const token = req.headers["x-access-token"]
 
@@ -93,7 +93,7 @@ router.get("/quote", async(req,res)=>{
 })
 
 
-router.post("/quote", async(req,res)=>{
+router.post("/dashboard", async(req,res)=>{
    
     const token = req.headers["x-access-token"]
 
