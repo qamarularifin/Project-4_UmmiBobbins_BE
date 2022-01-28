@@ -127,12 +127,12 @@ router.get("/:id", async (req, res) => {
 
 // update user profile
 
-router.put("/:userID", async (req, res) => {
+router.put("/:id", async (req, res) => {
     //update one user by _id
     console.log("updating one user, find via _id");
   
     try {
-      const filterID = { _id: req.params.userID };
+      const filterID = { _id: req.params.id };
       const update = req.body;
       const userFind = await User.findOne(filterID);
       if (userFind !== null) {
