@@ -119,17 +119,42 @@ router.post("/dashboard", async(req,res)=>{
 })
 
 // update user profile
-router.put("/:id/update", async (req, res) => {
-    let updatedUser;
-    try {
-      updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-      });
-    } catch (err) {
-      res.status(400).send({ message: "Invalid request body" });
+
+router.put("/:id/update", async(req,res)=>{
+   
+    const token = req.headers["x-access-token"]
+
+    try{
+        const decoded = jwt.verify(token, SECRET)  // authenticate token
+        const email = decoded.email
+        await User.updateOne(
+            {email: email},
+            {$set: {name: req.body.name}},
+            {$set: {email: req.body.email}},
+            {$set: {password: req.body.password}},
+            
+
+            )
+        return res.json({status: "ok"}) // get the quote based on the user email
+    } catch(error){
+        console.log(error)
+        res.json({status: "error", error: "invalid token"})
     }
-    res.send(updatedUser);
-  });
+    
+})
+
+
+// router.put("/:id/update", async (req, res) => {
+//     let updatedUser;
+//     try {
+//       updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+//         new: true,
+//       });
+//     } catch (err) {
+//       res.status(400).send({ message: "Invalid request body" });
+//     }
+//     res.send(updatedUser);
+//   });
 
 // update user profile
 // router.put("/update/:id", async (req,res) =>{
