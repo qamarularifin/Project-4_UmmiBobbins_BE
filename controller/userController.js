@@ -127,7 +127,7 @@ router.get("/:id", async (req, res) => {
 
 // update user profile
 
-router.post("/:userID", async (req, res) => {
+router.put("/:userID", async (req, res) => {
     //update one user by _id
     console.log("updating one user, find via _id");
   
