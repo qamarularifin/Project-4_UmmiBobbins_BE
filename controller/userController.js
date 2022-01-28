@@ -74,6 +74,8 @@ router.post("/login", async(req,res)=>{
 
 
 // use this get request to render (permanent) fields in the dashboard
+// this get request consists of token that is unique to a user
+// hence, all the data will be unique to the user based on email specified
 router.get("/dashboard", async(req,res)=>{
    
     const token = req.headers["x-access-token"]
