@@ -118,6 +118,32 @@ router.post("/dashboard", async(req,res)=>{
     
 })
 
+// update user profile
+router.put("/update/:id", async (req,res) =>{
+    const { id } = req.params;
+    const user = await User.findById(id)
+
+    if (user){
+        user.name = req.body.name || user.name,
+        user.email = req.body.email || user.email;
+        
+        if (req.body.password){
+            user.password = req.body.password
+        }
+
+        const updatedUser = await user.save()
+        res.json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email
+
+        })
+    } else{
+        res.status(404);
+        throw new Error("User not found")
+    }
+})
+
 // get userinfo
 // router.get("/:id", async (req, res) => {
 //     const { id } = req.params;
