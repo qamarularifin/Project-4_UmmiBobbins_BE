@@ -118,43 +118,41 @@ router.post("/dashboard", async(req,res)=>{
     
 })
 
+// show route
+router.get("/:id", async (req, res) => {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    res.send(user);
+  });
+
 // update user profile
 
-router.put("/:id/update", async(req,res)=>{
-   
-    const token = req.headers["x-access-token"]
-
-    try{
-        const decoded = jwt.verify(token, SECRET)  // authenticate token
-        const email = decoded.email
-        await User.updateOne(
-            {email: email},
-            {$set: {name: req.body.name}},
-            {$set: {email: req.body.email}},
-            {$set: {password: req.body.password}},
-            
-
-            )
-        return res.json({status: "ok"}) // get the quote based on the user email
-    } catch(error){
-        console.log(error)
-        res.json({status: "error", error: "invalid token"})
+router.put("/:userID", async (req, res) => {
+    //update one user by _id
+    console.log("updating one user, find via _id");
+  
+    try {
+      const filterID = { _id: req.params.userID };
+      const update = req.body;
+      const userFind = await User.findOne(filterID);
+      if (userFind !== null) {
+        //found the user via _id
+        const userUpdated = await User.updateOne(filterID, update);
+        res.send(userUpdated);
+      } else {
+        //if user not found, send 404 status
+        res.status(404).send("No users were found with that _id");
+      }
+    } catch (error) {
+      console.error(error);
+      //likely the userID was not a string of 12 bytes or a string of 24 hex characters
+      res.status(400).send("error when updating user, bad input");
     }
-    
-})
+  });
 
 
-// router.put("/:id/update", async (req, res) => {
-//     let updatedUser;
-//     try {
-//       updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-//         new: true,
-//       });
-//     } catch (err) {
-//       res.status(400).send({ message: "Invalid request body" });
-//     }
-//     res.send(updatedUser);
-//   });
+
+
 
 // update user profile
 // router.put("/update/:id", async (req,res) =>{
