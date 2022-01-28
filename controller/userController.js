@@ -86,7 +86,9 @@ router.get("/dashboard", async(req,res)=>{
                          quote: user.quote, 
                          email: user.email,
                          name: user.name,
-                         _id: user._id}) // get the quote based on the user email //quote will be exclusive to profile 
+                         role: user.role,
+                         _id: user._id,
+                         }) // get the quote based on the user email //quote will be exclusive to profile 
     } catch(error){
         console.log(error)
         res.json({status: "error", error: "invalid token"})
