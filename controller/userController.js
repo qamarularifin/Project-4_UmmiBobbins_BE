@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
   });
 
 
-router.post("/register", async(req,res)=>{
+router.post("/signup", async(req,res)=>{
  
     try {
         const newPassword = await bcrypt.hash(req.body.password, 10)

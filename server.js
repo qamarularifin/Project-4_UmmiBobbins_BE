@@ -3,13 +3,13 @@ const app = express();
 const mongoose = require('mongoose')
 const cors = require("cors")
 require('dotenv').config();
-//const CORS_WHITELIST = process.env.CORS_WHITELIST.split(',')
+//const CORS_WHITELIST = process.env.CORS_WHITELIST.split(',') //deployment doesnt work with this
 
 
 
 app.use(cors())
 // app.use(cors({
-//   origin: CORS_WHITELIST
+//   origin: CORS_WHITELIST  // deployment doesnt work with this
 // }));
 app.use(express.json());
 
