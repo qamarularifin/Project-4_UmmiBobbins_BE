@@ -82,8 +82,8 @@ router.get("/dashboard", async(req,res)=>{
 
     try{
         const decoded = jwt.verify(token, SECRET) // authenticate token
-        const id = decoded._id
-        const user = await User.findOne({_id: id})
+        const email = decoded.email
+        const user = await User.findOne({email: email})
         return res.json({status: "ok", 
                          quote: user.quote, 
                          email: user.email,
