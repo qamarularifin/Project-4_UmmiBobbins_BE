@@ -26,15 +26,15 @@ router.post("/signup", async(req,res)=>{
         const email = req.body.email
         const password = await bcrypt.hash(req.body.password, 10)
         const role = req.body.role
-        await User.create({
+        const user = await User.create({
             name: name,
             email: email,
             password: password,
             // role: role
 
         });
-        res.json({status: "ok"})
-        //res.send(user)
+        // res.json({status: "ok"})
+        res.send(user)
     } catch (error) {
         res.json({status: "error", error: "Duplicate email"})
         
