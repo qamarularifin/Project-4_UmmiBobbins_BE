@@ -30,7 +30,7 @@ router.post("/signup", async(req,res)=>{
             name: name,
             email: email,
             password: password,
-            role: role
+            // role: role
 
         });
         res.json({status: "ok"})
