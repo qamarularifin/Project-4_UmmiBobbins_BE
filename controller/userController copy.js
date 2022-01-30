@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel")
+const jwt = require("jsonwebtoken")
 const SECRET = process.env.SECRET
 
 
@@ -22,15 +23,12 @@ router.get("/", async (req, res) => {
 router.post("/signup", async(req,res)=>{
  
     try {
-        const name = req.body.name
-        const email = req.body.email
-        const password = await bcrypt.hash(req.body.password, 10)
-        const role = req.body.role
+        const newPassword = await bcrypt.hash(req.body.password, 10)
         await User.create({
-            name: name,
-            email: email,
-            password: password,
-            role: role
+            name: req.body.name,
+            email: req.body.email,
+            password: newPassword,
+            role: req.body.role
 
         });
         res.json({status: "ok"})
@@ -41,7 +39,38 @@ router.post("/signup", async(req,res)=>{
     }   
 })
 
+router.post("/login", async(req,res)=>{
+   
+        const user = await User.findOne({
+            email: req.body.email,
+            //password: req.body.password
+        })
 
+        if (!user){
+            return res.json({status: "error", error: "Invalid login"})
+        }
+
+        const isPasswordValid = await bcrypt.compare(req.body.password, user.password)
+
+        if (isPasswordValid) {
+
+            const token = jwt.sign({
+                name: user.name,
+                email: user.email
+            }, SECRET)
+            //res.json is to show in network. Note: go to Preview
+            return res.json(
+                {status: "ok", user: token}
+            )
+        } else{
+            return res.json(
+                {status: "error", user: false}
+            )
+        }
+ 
+  
+       
+})
 
 
 // use this get request to render (permanent) fields in the dashboard
