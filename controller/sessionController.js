@@ -35,7 +35,7 @@ router.post("/login", async(req,res)=>{
 
 
 // DELETE SESSION FOR LOGGING OUT
-router.delete("/", async (req, res) => {
+router.delete("/dashboard", async (req, res) => {
     req.session.destroy(() => {
         return res.json(
             {status: "ok"}
