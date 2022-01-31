@@ -50,8 +50,8 @@ router.post("/signup", async(req,res)=>{
 router.get("/dashboard/", async(req,res)=>{
    
     try{
-        const user = await User.findOne({email: req.body.email})
-        req.session.user = user
+        // const user = await User.findOne({email: req.body.email})
+        // req.session.user = user
         
         return res.json({status: "ok", userData: req.session}) // get the quote based on the user email //quote will be exclusive to profile 
     } catch(error){
