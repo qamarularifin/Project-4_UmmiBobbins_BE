@@ -50,9 +50,10 @@ router.post("/signup", async(req,res)=>{
 router.get("/dashboard/", async(req,res)=>{
    
     try{
-        
         const user = await User.findOne({email: req.body.email})
-        return res.json({status: "ok", userData: user}) // get the quote based on the user email //quote will be exclusive to profile 
+        req.session.user = user
+        
+        return res.json({status: "ok", userData: req.session}) // get the quote based on the user email //quote will be exclusive to profile 
     } catch(error){
         console.log(error)
         res.json({status: "error", error: "invalid session"})
