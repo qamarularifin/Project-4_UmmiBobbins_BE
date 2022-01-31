@@ -47,27 +47,19 @@ router.post("/signup", async(req,res)=>{
 // use this get request to render (permanent) fields in the dashboard
 // this get request consists of token that is unique to a user
 // hence, all the data will be unique to the user based on email specified
-router.get("/dashboard", [checkIsUser], async(req,res)=>{
-   
-    
-
+router.get("/dashboard/:id", async(req,res)=>{
+    const { id } = req.params
     try{
         
-        
-        const user = await User.findOne({email: email})
-        return res.json({status: "ok", 
-                         quote: user.quote, 
-                         email: user.email,
-                         name: user.name,
-                         role: user.role,
-                         _id: user._id,
-                         }) // get the quote based on the user email //quote will be exclusive to profile 
+        const user = await User.findById(id)
+        return res.json({status: "ok", userData: user}) // get the quote based on the user email //quote will be exclusive to profile 
     } catch(error){
         console.log(error)
         res.json({status: "error", error: "invalid session"})
     }
     
 })
+
 
 
 
