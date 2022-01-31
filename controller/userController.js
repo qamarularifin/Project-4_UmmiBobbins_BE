@@ -112,12 +112,32 @@ router.post("/dashboard/:id", async(req,res)=>{
     
 })
 
-// show route
-router.get("/:id", async (req, res) => {
-    const { id } = req.params;
+
+
+// update user profile
+router.post("/dashboard/update-profile/:id", async (req, res)=>{
+    const { id } = req.params
     const user = await User.findById(id);
-    res.send(user);
-  });
+
+    try{
+        await User.updateMany(
+            {_id: user},
+            {$set: {email: req.body.email}
+            
+            // , $set:{password: req.body.password}
+        
+            }
+            )
+        return res.json({status: "ok"}) // get the quote based on the user email
+    } catch(error){
+        console.log(error)
+        res.json({status: "error", error: "duplicate update"})
+    }
+
+})
+
+
+
 
 // update user profile
 
