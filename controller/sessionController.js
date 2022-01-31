@@ -22,8 +22,8 @@ router.post("/login", async(req,res)=>{
         req.session.user = user // this basically makes cookie and add session to user with session id
         console.log("sesssionsss", req.session)
         //res.json is to show in network. Note: go to Preview
-        res.send(
-            req.session.user
+        return res.json(
+            {status: "ok", userData: req.session.user}
         )
     } else{
         return res.json(
