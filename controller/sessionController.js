@@ -8,7 +8,7 @@ router.post("/login", async(req,res)=>{
    
     const user = await User.findOne({  // user returns an object that is tied to the username i.e, 123
         email: req.body.email,
-        password: req.body.password
+        // password: req.body.password
     })
 
     if (!user){
