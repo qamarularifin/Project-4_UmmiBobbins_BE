@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel")
 const SECRET = process.env.SECRET
+const checkIsUser = require("../middlewares/checkIsUser")
 
 
 // get all users
@@ -43,20 +44,16 @@ router.post("/signup", async(req,res)=>{
 
 
 
-
-
-
-
 // use this get request to render (permanent) fields in the dashboard
 // this get request consists of token that is unique to a user
 // hence, all the data will be unique to the user based on email specified
-router.get("/dashboard", async(req,res)=>{
+router.get("/dashboard", [checkIsUser], async(req,res)=>{
    
-    const token = req.headers["x-access-token"]
+    
 
     try{
-        const decoded = jwt.verify(token, SECRET) // authenticate token
-        const email = decoded.email
+        
+        
         const user = await User.findOne({email: email})
         return res.json({status: "ok", 
                          quote: user.quote, 
@@ -67,30 +64,60 @@ router.get("/dashboard", async(req,res)=>{
                          }) // get the quote based on the user email //quote will be exclusive to profile 
     } catch(error){
         console.log(error)
-        res.json({status: "error", error: "invalid token"})
+        res.json({status: "error", error: "invalid session"})
     }
     
 })
 
 
-router.post("/dashboard", async(req,res)=>{
+
+
+
+
+// // use this get request to render (permanent) fields in the dashboard
+// // this get request consists of token that is unique to a user
+// // hence, all the data will be unique to the user based on email specified
+// router.get("/dashboard", [checkIsUser], async(req,res)=>{
    
-    const token = req.headers["x-access-token"]
+//     const token = req.headers["x-access-token"]
 
-    try{
-        const decoded = jwt.verify(token, SECRET)  // authenticate token
-        const email = decoded.email
-        await User.updateOne(
-            {email: email},
-            {$set: {quote: req.body.quote}}
-            )
-        return res.json({status: "ok"}) // get the quote based on the user email
-    } catch(error){
-        console.log(error)
-        res.json({status: "error", error: "invalid token"})
-    }
+//     try{
+//         const decoded = jwt.verify(token, SECRET) // authenticate token
+//         const email = decoded.email
+//         const user = await User.findOne({email: email})
+//         return res.json({status: "ok", 
+//                          quote: user.quote, 
+//                          email: user.email,
+//                          name: user.name,
+//                          role: user.role,
+//                          _id: user._id,
+//                          }) // get the quote based on the user email //quote will be exclusive to profile 
+//     } catch(error){
+//         console.log(error)
+//         res.json({status: "error", error: "invalid token"})
+//     }
     
-})
+// })
+
+
+// router.post("/dashboard", async(req,res)=>{
+   
+//     const token = req.headers["x-access-token"]
+
+//     try{
+//         const decoded = jwt.verify(token, SECRET)  // authenticate token
+//         const email = decoded.email
+//         await User.updateOne(
+//             {email: email},
+//             {$set: {quote: req.body.quote}}
+//             )
+//         return res.json({status: "ok"}) // get the quote based on the user email
+//     } catch(error){
+//         console.log(error)
+//         res.json({status: "error", error: "invalid token"})
+//     }
+    
+// })
 
 // show route
 router.get("/:id", async (req, res) => {
