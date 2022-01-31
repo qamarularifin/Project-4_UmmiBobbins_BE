@@ -23,7 +23,7 @@ router.post("/login", async(req,res)=>{
         console.log("sesssionsss", req.session)
         //res.json is to show in network. Note: go to Preview
         return res.json(
-            {status: "ok", userData: req.session.user}
+            {status: "ok", userData: req.session}
         )
     } else{
         return res.json(
