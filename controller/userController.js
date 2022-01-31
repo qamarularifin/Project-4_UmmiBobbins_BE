@@ -47,68 +47,70 @@ router.post("/signup", async(req,res)=>{
 // use this get request to render (permanent) fields in the dashboard
 // this get request consists of token that is unique to a user
 // hence, all the data will be unique to the user based on email specified
-router.get("/dashboard/", async(req,res)=>{
+// router.get("/dashboard", async(req,res)=>{
    
-    try{
-        // const user = await User.findOne({email: req.body.email})
-        // req.session.user = user
+//     try{
+//         // const user = await User.findOne({email: req.body.email})
+//         // req.session.user = user
         
-        return res.json({status: "ok", userData: req.session}) // get the quote based on the user email //quote will be exclusive to profile 
+//         return res.json({status: "ok", userData: req.session}) // get the quote based on the user email //quote will be exclusive to profile 
+//     } catch(error){
+//         console.log(error)
+//         res.json({status: "error", error: "invalid session"})
+//     }
+    
+// })
+
+// create route expense
+router.post("/dashboard", async (req, res) => {
+    let newQuote;
+    try {
+      newQuote = await User.create({quote: req.body.quote});
+    } catch (err) {
+      res.status(400).send({ message: "Invalid request body" });
+      return;
+    }
+    res.json({status: "ok", newQuote});
+  });
+  
+
+
+
+router.get("/dashboard/:id", async(req,res)=>{
+    const { id } = req.params
+    
+    try{
+            const user = await User.findById(id);
+            res.send(user)
+    }catch(error){
+        res.json({status: "error", error: "invalid data"})
+    }
+
+})
+
+
+router.post("/dashboard/:id", async(req,res)=>{
+    const { id } = req.params
+    const user = await User.findById(id); // user returns an object that is tied to the username i.e, 123
+    // const user = await User.findOne({  // user returns an object that is tied to the username i.e, 123
+    //     email: req.body.email,
+    //     //password: req.body.password // with this will not work for login
+    // })
+   
+
+    try{
+        
+        await User.updateOne(
+            {_id: user},
+            {$set: {quote: req.body.quote}}
+            )
+        return res.json({status: "ok"}) // get the quote based on the user email
     } catch(error){
         console.log(error)
         res.json({status: "error", error: "invalid session"})
     }
     
 })
-
-
-
-
-
-// // use this get request to render (permanent) fields in the dashboard
-// // this get request consists of token that is unique to a user
-// // hence, all the data will be unique to the user based on email specified
-// router.get("/dashboard", [checkIsUser], async(req,res)=>{
-   
-//     const token = req.headers["x-access-token"]
-
-//     try{
-//         const decoded = jwt.verify(token, SECRET) // authenticate token
-//         const email = decoded.email
-//         const user = await User.findOne({email: email})
-//         return res.json({status: "ok", 
-//                          quote: user.quote, 
-//                          email: user.email,
-//                          name: user.name,
-//                          role: user.role,
-//                          _id: user._id,
-//                          }) // get the quote based on the user email //quote will be exclusive to profile 
-//     } catch(error){
-//         console.log(error)
-//         res.json({status: "error", error: "invalid token"})
-//     }
-    
-// })
-
-
-// router.post("/dashboard", async(req,res)=>{
-   
-//     const token = req.headers["x-access-token"]
-
-//     try{
-//         const decoded = jwt.verify(token, SECRET)  // authenticate token
-//         const email = decoded.email
-//         await User.updateOne(
-//             {email: email},
-//             {$set: {quote: req.body.quote}}
-//             )
-//         return res.json({status: "ok"}) // get the quote based on the user email
-//     } catch(error){
-//         console.log(error)
-//         res.json({status: "error", error: "invalid token"})
-//     }
-    
-// })
 
 // show route
 router.get("/:id", async (req, res) => {
