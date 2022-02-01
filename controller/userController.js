@@ -44,22 +44,7 @@ router.post("/signup", async(req,res)=>{
 
 
 
-// use this get request to render (permanent) fields in the dashboard
-// this get request consists of token that is unique to a user
-// hence, all the data will be unique to the user based on email specified
-// router.get("/dashboard", async(req,res)=>{
-   
-//     try{
-//         // const user = await User.findOne({email: req.body.email})
-//         // req.session.user = user
-        
-//         return res.json({status: "ok", userData: req.session}) // get the quote based on the user email //quote will be exclusive to profile 
-//     } catch(error){
-//         console.log(error)
-//         res.json({status: "error", error: "invalid session"})
-//     }
-    
-// })
+
 
 // create route expense
 router.post("/dashboard", async (req, res) => {
@@ -114,17 +99,16 @@ router.post("/dashboard/:id", async(req,res)=>{
 
 
 
-// update user profile
+// update user profile // can update both email and enter new password
 router.post("/dashboard/update-profile/:id", async (req, res)=>{
     const { id } = req.params
     const user = await User.findById(id);
+    const password = await bcrypt.hash(req.body.password, 10)
 
     try{
         await User.updateMany(
             {_id: user},
-            {$set: {email: req.body.email}
-            
-            // , $set:{password: req.body.password}
+            {$set: {email: req.body.email}, $set:{password: password}
         
             }
             )
