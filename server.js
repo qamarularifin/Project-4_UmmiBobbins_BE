@@ -44,6 +44,9 @@ app.use("/parent/api", parentController);
 const babySitterController = require("./controller/babySitterController");
 app.use("/babysitter/api", babySitterController);
 
+const bookingController = require("./controller/bookingController");
+app.use("/booking/api", bookingController);
+
 // connect to mongoose
 mongoose.connect(MONGO_URL).then(async () => {
   console.log("database connected");

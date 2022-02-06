@@ -43,9 +43,9 @@ router.post("/seed", async (req, res) => {
 
   try {
     seedItems = await Parent.create({
-      userId: await User.findOne({ email: "parent@parent.com" }),
-      name: "parent",
-      location: "tampines",
+      userId: await User.findOne({ email: "parent1@parent1.com" }),
+      name: "parent1",
+      location: "yishun",
     });
   } catch (err) {
     res.send(err.message);
