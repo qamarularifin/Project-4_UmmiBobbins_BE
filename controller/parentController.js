@@ -37,6 +37,18 @@ router.post("/parent", async (req, res) => {
   res.send(createdParent);
 });
 
+//post because receiving the roomid from the frontend and backend will post the data to frontend as per the schema specific to the roomid
+router.post("/getparentbyid", async (req, res) => {
+  const parentid = req.body.id; // the req.body.roomid must be be same in frontend which is roomid
+  try {
+    const parent = await Parent.findById(parentid); //this will return an object related to the id
+    // const room = await Room.findOne({ _id: roomid }); //this is another method which is working
+    res.send(parent); //need to res.send so that front end can get the data via axios.post method
+  } catch (error) {
+    return res.status(400).json({ message: error });
+  }
+});
+
 //seeding for parent
 router.post("/seed", async (req, res) => {
   let seedItems;
@@ -44,8 +56,10 @@ router.post("/seed", async (req, res) => {
   try {
     seedItems = await Parent.create({
       userId: await User.findOne({ email: "parent1@parent1.com" }),
-      name: "parent1",
-      location: "yishun",
+      name: "Edward",
+      location: "Ang Mo Kio",
+      image:
+        "https://cdn3.vectorstock.com/i/1000x1000/83/52/cartoon-cute-parents-and-baby-vector-22198352.jpg",
     });
   } catch (err) {
     res.send(err.message);
@@ -55,3 +69,7 @@ router.post("/seed", async (req, res) => {
 });
 
 module.exports = router;
+
+//https://cdn2.vectorstock.com/i/1000x1000/19/16/parents-hugging-a-baby-vector-16381916.jpg
+
+//https://cdn3.vectorstock.com/i/1000x1000/83/52/cartoon-cute-parents-and-baby-vector-22198352.jpg

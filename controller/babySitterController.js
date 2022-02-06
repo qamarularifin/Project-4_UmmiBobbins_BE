@@ -32,7 +32,7 @@ router.post("/babysitter", async (req, res) => {
 
 //post because receiving the roomid from the frontend and backend will post the data to frontend as per the schema specific to the roomid
 router.post("/getbabysitterbyid", async (req, res) => {
-  const babysitterid = req.body.xxx; // the req.body.roomid must be be same in frontend which is roomid
+  const babysitterid = req.body.id; // the req.body.roomid must be be same in frontend which is roomid
   try {
     const babySitter = await BabySitter.findById(babysitterid); //this will return an object related to the id
     // const room = await Room.findOne({ _id: roomid }); //this is another method which is working
@@ -49,8 +49,11 @@ router.post("/seed", async (req, res) => {
   try {
     seedItems = await BabySitter.create({
       userId: await User.findOne({ email: "baby1@baby1.com" }),
-      name: "baby1",
+      name: "Bulbasaur-babysitter",
       location: "kembangan",
+      ratePerHour: 40,
+      image:
+        "https://static.wikia.nocookie.net/ultimate-pokemon-fanon/images/1/1f/001Bulbasaur_OS_anime_2.png/revision/latest/scale-to-width-down/400?cb=20160513021913",
     });
   } catch (err) {
     res.send(err.message);
@@ -60,3 +63,6 @@ router.post("/seed", async (req, res) => {
 });
 
 module.exports = router;
+
+//https://cdn.ndtv.com/tech/images/gadgets/pikachu_hi_pokemon.jpg?
+//https://static.wikia.nocookie.net/ultimate-pokemon-fanon/images/1/1f/001Bulbasaur_OS_anime_2.png/revision/latest/scale-to-width-down/400?cb=20160513021913

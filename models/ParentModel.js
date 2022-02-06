@@ -9,7 +9,7 @@ const ParentSchema = new mongoose.Schema(
     },
     name: { type: String, required: true },
     location: { type: String, required: true },
-
+    image: { type: String },
     currentBookings: [],
   },
   { collection: "parent-data" }

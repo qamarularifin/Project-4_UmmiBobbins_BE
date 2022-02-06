@@ -9,7 +9,11 @@ const BabySitterSchema = new mongoose.Schema(
     },
     name: { type: String, required: true },
     location: { type: String, required: true },
-
+    ratePerHour: {
+      type: Number,
+      required: true,
+    },
+    image: { type: String },
     currentBookings: [],
   },
   { collection: "babysitter-data" }
