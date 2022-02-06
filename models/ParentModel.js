@@ -1,15 +1,20 @@
 const mongoose = require("mongoose");
 
-const UserParentSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: { type: String, default: "parent" },
-  location: { type: String, required: true },
-  quote: { type: String },
-  currentBookings: [],
-});
+const ParentSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    name: { type: String, required: true },
+    location: { type: String, required: true },
 
-const userParentModel = mongoose.model("UserParent", UserParentSchema);
+    currentBookings: [],
+  },
+  { collection: "parent-data" }
+);
 
-module.exports = userParentModel;
+const parentModel = mongoose.model("Parent", ParentSchema);
+
+module.exports = parentModel;
