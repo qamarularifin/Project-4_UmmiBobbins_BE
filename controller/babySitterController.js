@@ -75,7 +75,7 @@ router.post("/createbabysitternewprofile", async (req, res) => {
       name: name,
       location: location,
       image: image,
-      ratePerHour: req.body.ratePerHour,
+      ratePerHour: ratePerHour,
     });
     res.send(newParent);
   } catch (error) {
