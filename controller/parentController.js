@@ -49,7 +49,7 @@ router.post("/getparentbyid", async (req, res) => {
   }
 });
 
-// update new parent profile // can update both email and enter new password
+// create new parent profile
 router.post("/new-profile/:id", async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id);
@@ -65,6 +65,26 @@ router.post("/new-profile/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.json({ status: "error", error: "duplicate update" });
+  }
+});
+
+// parent new profile creation
+router.post("/createparentnewprofile", async (req, res) => {
+  try {
+    const userId = req.body.userId;
+    const name = req.body.name;
+    const location = req.body.location;
+    const image = req.body.image;
+
+    const newParent = await Parent.create({
+      userId: userId,
+      name: name,
+      location: location,
+      image: image,
+    });
+    res.send(newParent);
+  } catch (error) {
+    return res.status(400).json({ message: error });
   }
 });
 
