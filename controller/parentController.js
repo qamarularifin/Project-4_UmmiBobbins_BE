@@ -49,6 +49,25 @@ router.post("/getparentbyid", async (req, res) => {
   }
 });
 
+// update new parent profile // can update both email and enter new password
+router.post("/new-profile/:id", async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+
+  try {
+    await User.updateOne(
+      { _id: user },
+      {
+        $set: { created: req.body.created },
+      }
+    );
+    return res.json({ status: "ok" }); // get the quote based on the user email
+  } catch (error) {
+    console.log(error);
+    res.json({ status: "error", error: "duplicate update" });
+  }
+});
+
 //seeding for parent
 router.post("/seed", async (req, res) => {
   let seedItems;

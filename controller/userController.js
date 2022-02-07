@@ -20,12 +20,12 @@ router.get("/", async (req, res) => {
 
 router.post("/signup", async (req, res) => {
   try {
-    const name = req.body.name;
+    // const name = req.body.name;
     const email = req.body.email;
     const password = await bcrypt.hash(req.body.password, 10);
     const role = req.body.role;
     await User.create({
-      name: name,
+      // name: name,
       email: email,
       password: password,
       role: role,
@@ -97,30 +97,30 @@ router.post("/dashboard/update-profile/:id", async (req, res) => {
   }
 });
 
-// update user profile
+// // update user profile
 
-router.put("/:id", async (req, res) => {
-  //update one user by _id
-  console.log("updating one user, find via _id");
+// router.put("/:id", async (req, res) => {
+//   //update one user by _id
+//   console.log("updating one user, find via _id");
 
-  try {
-    const filterID = { _id: req.params.id };
-    const update = req.body;
-    const userFind = await User.findOne(filterID);
-    if (userFind !== null) {
-      //found the user via _id
-      const userUpdated = await User.updateOne(filterID, update);
-      res.send(userUpdated);
-    } else {
-      //if user not found, send 404 status
-      res.status(404).send("No users were found with that _id");
-    }
-  } catch (error) {
-    console.error(error);
-    //likely the userID was not a string of 12 bytes or a string of 24 hex characters
-    res.status(400).send("error when updating user, bad input");
-  }
-});
+//   try {
+//     const filterID = { _id: req.params.id };
+//     const update = req.body;
+//     const userFind = await User.findOne(filterID);
+//     if (userFind !== null) {
+//       //found the user via _id
+//       const userUpdated = await User.updateOne(filterID, update);
+//       res.send(userUpdated);
+//     } else {
+//       //if user not found, send 404 status
+//       res.status(404).send("No users were found with that _id");
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     //likely the userID was not a string of 12 bytes or a string of 24 hex characters
+//     res.status(400).send("error when updating user, bad input");
+//   }
+// });
 
 // update user profile
 // router.put("/update/:id", async (req,res) =>{
