@@ -39,46 +39,29 @@ router.post("/bookbabysitter", async (req, res) => {
     });
 
     babySitterTemp.currentBookings.push({
-      bookingid: newBooking._id,
+      bookingId: newBooking._id,
       fromDate: moment(fromDate).format("DD-MM-YYYY"),
       toDate: moment(toDate).format("DD-MM-YYYY"),
       parentId: parentTemp._id.toString(),
       babySitterId: babySitterId,
-      status: newBooking.status, //status can put here because the default is set to "booked". So it overwrites required true condition
+      status: newBooking.status, //status can put here because the default is set to false. So it overwrites required true condition
     });
 
     parentTemp.currentBookings.push({
-      bookingid: newBooking._id,
+      bookingId: newBooking._id,
       fromDate: moment(fromDate).format("DD-MM-YYYY"),
       toDate: moment(toDate).format("DD-MM-YYYY"),
       parentId: parentTemp._id.toString(),
       babySitterId: babySitterId,
-      status: newBooking.status, //status can put here because the default is set to "booked". So it overwrites required true condition
+      status: newBooking.status,
     });
 
-    await babySitterTemp.save();
-    await parentTemp.save();
+    await babySitterTemp.save(); //save to database
+    await parentTemp.save(); //save to database
     res.send(newBooking);
   } catch (error) {
     return res.status(400).json({ message: error });
   }
 });
-
-// router.post("/savetoparent", async (req, res) => {
-//   const parentId = req.body.parentId;
-//   const babySitterId = req.body.babySitterId;
-
-//   try {
-//     // const babySitterTemp = await BabySitter.findOne({ _id: babySitterId });
-//     // console.log("cccc", babySitterTemp);
-//     const parentTemp = await Parent.findOne({ userId: parentId });
-//     console.log("vvvvv", parentTemp);
-//     // parentTemp.currentBookings.push(babySitterTemp.currentBookings);
-
-//     // await parentTemp.save();
-//   } catch (error) {
-//     return res.status(400).json({ message: error });
-//   }
-// });
 
 module.exports = router;

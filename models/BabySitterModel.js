@@ -9,7 +9,7 @@ const BabySitterSchema = new mongoose.Schema(
     },
     name: { type: String, required: true },
     location: { type: String, required: true },
-    ratePerHour: {
+    ratePerDay: {
       type: Number,
       required: true,
     },
