@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const BookingSchema = new mongoose.Schema(
   {
-    parentUserId: {
+    parentId: {
       type: mongoose.Types.ObjectId,
       required: true,
       ref: "Parent",
