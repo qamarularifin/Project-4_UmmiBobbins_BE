@@ -17,10 +17,10 @@ router.get("/getallbookings", async (req, res) => {
 router.post("/bookbabysitter", async (req, res) => {
   const parentUserId = req.body.parentUserId;
   const babySitterId = req.body.babySitterId;
-  const fromTime = req.body.fromTime;
-  const toTime = req.body.toTime;
+  const fromDate = req.body.fromDate;
+  const toDate = req.body.toDate;
   const totalAmount = req.body.totalAmount;
-  const totalTime = req.body.totalTime;
+  const totalDays = req.body.totalDays;
 
   const parentTemp = await Parent.findOne({ userId: parentUserId });
   const babySitterTemp = await BabySitter.findOne({ _id: babySitterId });
@@ -29,19 +29,19 @@ router.post("/bookbabysitter", async (req, res) => {
 
   try {
     const newBooking = await Booking.create({
-      parentId: parentTemp._id,
+      parentId: parentTemp._id.toString(),
       babySitterId: babySitterId,
-      fromTime: moment(fromTime).format("DD-MM-YYYY"),
-      toTime: moment(toTime).format("DD-MM-YYYY"),
+      fromDate: moment(fromDate).format("DD-MM-YYYY"),
+      toDate: moment(toDate).format("DD-MM-YYYY"),
       totalAmount: totalAmount,
-      totalTime: totalTime,
+      totalDays: totalDays,
       transactionId: "1111",
     });
 
     babySitterTemp.currentBookings.push({
       bookingid: newBooking._id,
-      fromTime: moment(fromTime).format("DD-MM-YYYY"),
-      toTime: moment(toTime).format("DD-MM-YYYY"),
+      fromDate: moment(fromDate).format("DD-MM-YYYY"),
+      toDate: moment(toDate).format("DD-MM-YYYY"),
       parentId: parentTemp._id.toString(),
       babySitterId: babySitterId,
       status: newBooking.status, //status can put here because the default is set to "booked". So it overwrites required true condition
@@ -49,8 +49,8 @@ router.post("/bookbabysitter", async (req, res) => {
 
     parentTemp.currentBookings.push({
       bookingid: newBooking._id,
-      fromTime: moment(fromTime).format("DD-MM-YYYY"),
-      toTime: moment(toTime).format("DD-MM-YYYY"),
+      fromDate: moment(fromDate).format("DD-MM-YYYY"),
+      toDate: moment(toDate).format("DD-MM-YYYY"),
       parentId: parentTemp._id.toString(),
       babySitterId: babySitterId,
       status: newBooking.status, //status can put here because the default is set to "booked". So it overwrites required true condition
