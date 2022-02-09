@@ -7,15 +7,15 @@ const SECRET = process.env.SECRET;
 const checkIsUser = require("../middlewares/checkIsUser");
 
 // get route parent
-router.get("/", async (req, res) => {
-  let getParent;
+router.get("/getallparents", async (req, res) => {
+  let getParents;
   try {
-    getParent = await Parent.find({});
+    getParents = await Parent.find({});
+    res.send(getParents);
   } catch (err) {
     res.status(400).send({ message: "Invalid request body" });
     return;
   }
-  res.send(getParent);
 });
 
 // show route

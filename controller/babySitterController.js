@@ -7,15 +7,15 @@ const SECRET = process.env.SECRET;
 const checkIsUser = require("../middlewares/checkIsUser");
 
 // get all babysitters
-router.get("/", async (req, res) => {
+router.get("/getallbabysitters", async (req, res) => {
   let getBabySitters;
   try {
     getBabySitters = await BabySitter.find({});
+    res.send(getBabySitters);
   } catch (error) {
     res.status(500).send({ message: "Unexpected Error" });
     return;
   }
-  res.send(getBabySitters);
 });
 
 // create route babysitter
