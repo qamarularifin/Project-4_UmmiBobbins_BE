@@ -42,7 +42,7 @@ router.post("/bookbabysitter", async (req, res) => {
       bookingid: newBooking._id,
       fromTime: moment(fromTime).format("DD-MM-YYYY"),
       toTime: moment(toTime).format("DD-MM-YYYY"),
-      parentId: parentTemp._id,
+      parentId: parentTemp._id.toString(),
       babySitterId: babySitterId,
       status: newBooking.status, //status can put here because the default is set to "booked". So it overwrites required true condition
     });
@@ -51,7 +51,7 @@ router.post("/bookbabysitter", async (req, res) => {
       bookingid: newBooking._id,
       fromTime: moment(fromTime).format("DD-MM-YYYY"),
       toTime: moment(toTime).format("DD-MM-YYYY"),
-      parentId: parentTemp._id,
+      parentId: parentTemp._id.toString(),
       babySitterId: babySitterId,
       status: newBooking.status, //status can put here because the default is set to "booked". So it overwrites required true condition
     });
