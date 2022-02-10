@@ -75,12 +75,14 @@ router.post("/createparentnewprofile", async (req, res) => {
     const name = req.body.name;
     const location = req.body.location;
     const image = req.body.image;
+    const description = req.body.description;
 
     const newParent = await Parent.create({
       userId: userId,
       name: name,
       location: location,
       image: image,
+      description: description,
     });
     res.send(newParent);
   } catch (error) {

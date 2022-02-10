@@ -69,6 +69,7 @@ router.post("/createbabysitternewprofile", async (req, res) => {
     const location = req.body.location;
     const image = req.body.image;
     const ratePerDay = req.body.ratePerDay;
+    const description = req.body.description;
 
     const newBabySitter = await BabySitter.create({
       userId: userId,
@@ -76,6 +77,7 @@ router.post("/createbabysitternewprofile", async (req, res) => {
       location: location,
       image: image,
       ratePerDay: ratePerDay,
+      description: description,
     });
     res.send(newBabySitter);
   } catch (error) {
