@@ -54,10 +54,10 @@ router.post("/new-profile/:id", async (req, res) => {
         $set: { created: req.body.created },
       }
     );
-    return res.json({ status: "ok" }); // get the quote based on the user email
+    return res.json({ status: "ok" });
   } catch (error) {
     console.log(error);
-    res.json({ status: "error", error: "duplicate update" });
+    return res.status(400).json({ message: error });
   }
 });
 
@@ -68,14 +68,14 @@ router.post("/createbabysitternewprofile", async (req, res) => {
     const name = req.body.name;
     const location = req.body.location;
     const image = req.body.image;
-    const ratePerHour = req.body.ratePerHour;
+    const ratePerDay = req.body.ratePerDay;
 
     const newParent = await BabySitter.create({
       userId: userId,
       name: name,
       location: location,
       image: image,
-      ratePerHour: ratePerHour,
+      ratePerDay: ratePerDay,
     });
     res.send(newParent);
   } catch (error) {
