@@ -4,6 +4,7 @@ const Booking = require("../models/bookingModel");
 const BabySitter = require("../models/babySitterModel");
 const Parent = require("../models/parentModel");
 const moment = require("moment");
+const { v4: uuidv4 } = require("uuid");
 
 router.get("/getallbookings", async (req, res) => {
   try {
@@ -21,6 +22,7 @@ router.post("/bookbabysitter", async (req, res) => {
   const toDate = req.body.toDate;
   const totalAmount = req.body.totalAmount;
   const totalDays = req.body.totalDays;
+  const transactionId = uuidv4();
 
   const parentTemp = await Parent.findOne({ userId: parentUserId });
   const babySitterTemp = await BabySitter.findOne({ _id: babySitterId });
@@ -35,7 +37,7 @@ router.post("/bookbabysitter", async (req, res) => {
       toDate: moment(toDate).format("DD-MM-YYYY"),
       totalAmount: totalAmount,
       totalDays: totalDays,
-      transactionId: "1111",
+      transactionId: transactionId,
     });
 
     babySitterTemp.currentBookings.push({
@@ -44,6 +46,9 @@ router.post("/bookbabysitter", async (req, res) => {
       toDate: moment(toDate).format("DD-MM-YYYY"),
       parentId: parentTemp._id.toString(),
       babySitterId: babySitterId,
+      totalAmount: totalAmount,
+      totalDays: totalDays,
+      transactionId: transactionId,
       status: newBooking.status, //status can put here because the default is set to false. So it overwrites required true condition
     });
 
@@ -53,6 +58,9 @@ router.post("/bookbabysitter", async (req, res) => {
       toDate: moment(toDate).format("DD-MM-YYYY"),
       parentId: parentTemp._id.toString(),
       babySitterId: babySitterId,
+      totalAmount: totalAmount,
+      totalDays: totalDays,
+      transactionId: transactionId,
       status: newBooking.status,
     });
 

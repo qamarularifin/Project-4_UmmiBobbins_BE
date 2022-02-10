@@ -70,14 +70,14 @@ router.post("/createbabysitternewprofile", async (req, res) => {
     const image = req.body.image;
     const ratePerDay = req.body.ratePerDay;
 
-    const newParent = await BabySitter.create({
+    const newBabySitter = await BabySitter.create({
       userId: userId,
       name: name,
       location: location,
       image: image,
       ratePerDay: ratePerDay,
     });
-    res.send(newParent);
+    res.send(newBabySitter);
   } catch (error) {
     return res.status(400).json({ message: error });
   }
