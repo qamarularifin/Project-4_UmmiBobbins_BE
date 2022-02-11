@@ -7,6 +7,7 @@ const UserSchema = new mongoose.Schema(
     password: { type: String, required: true },
     role: { type: String, required: true },
     created: { type: Boolean, default: false },
+    isAdmin: { type: Boolean, default: false },
     quote: { type: String },
   },
   { collection: "user-data" }
