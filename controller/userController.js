@@ -99,10 +99,14 @@ router.post("/dashboard/update-profile/:id", async (req, res) => {
 });
 
 router.delete("/deleteuser/:id", async (req, res) => {
-  let deletedUser;
   try {
-    deletedUser = await User.findByIdAndRemove(req.params.id);
-    res.send(deletedUser);
+    const deletedUser = await User.findByIdAndRemove(req.params.id);
+    const parent = await Parent.findOneAndRemove({ userId: req.params.id });
+    const babySitter = await BabySitter.findOneAndRemove({
+      userId: req.params.id,
+    });
+
+    res.send({ deletedUser, parent, babySitter });
   } catch (err) {
     res.status(400).send({ message: "Invalid request body" });
     return;
