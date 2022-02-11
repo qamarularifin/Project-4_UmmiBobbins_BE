@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
+const Parent = require("../models/parentModel");
+const BabySitter = require("../models/babySitterModel");
 const SECRET = process.env.SECRET;
 const checkIsUser = require("../middlewares/checkIsUser");
 
@@ -25,7 +27,6 @@ router.post("/signup", async (req, res) => {
     const password = await bcrypt.hash(req.body.password, 10);
     const role = req.body.role;
     await User.create({
-      // name: name,
       email: email,
       password: password,
       role: role,
@@ -97,56 +98,16 @@ router.post("/dashboard/update-profile/:id", async (req, res) => {
   }
 });
 
-// // update user profile
-
-// router.put("/:id", async (req, res) => {
-//   //update one user by _id
-//   console.log("updating one user, find via _id");
-
-//   try {
-//     const filterID = { _id: req.params.id };
-//     const update = req.body;
-//     const userFind = await User.findOne(filterID);
-//     if (userFind !== null) {
-//       //found the user via _id
-//       const userUpdated = await User.updateOne(filterID, update);
-//       res.send(userUpdated);
-//     } else {
-//       //if user not found, send 404 status
-//       res.status(404).send("No users were found with that _id");
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     //likely the userID was not a string of 12 bytes or a string of 24 hex characters
-//     res.status(400).send("error when updating user, bad input");
-//   }
-// });
-
-// update user profile
-// router.put("/update/:id", async (req,res) =>{
-//     const { id } = req.params;
-//     const user = await User.findById(id)
-
-//     if (user){
-//         user.name = req.body.name || user.name,
-//         user.email = req.body.email || user.email;
-
-//         if (req.body.password){
-//             user.password = req.body.password
-//         }
-
-//         const updatedUser = await user.save()
-//         res.json({
-//             _id: updatedUser._id,
-//             name: updatedUser.name,
-//             email: updatedUser.email
-
-//         })
-//     } else{
-//         res.status(404);
-//         throw new Error("User not found")
-//     }
-// })
+router.delete("/deleteuser/:id", async (req, res) => {
+  let deletedUser;
+  try {
+    deletedUser = await User.findByIdAndRemove(req.params.id);
+    res.send(deletedUser);
+  } catch (err) {
+    res.status(400).send({ message: "Invalid request body" });
+    return;
+  }
+});
 
 // get userinfo
 // router.get("/:id", async (req, res) => {
