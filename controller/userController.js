@@ -100,8 +100,8 @@ router.post("/dashboard/update-profile/:id", async (req, res) => {
 
 router.delete("/deleteuser/:id", async (req, res) => {
   try {
-    const deletedUser = await User.findByIdAndRemove(req.params.id);
-    const parent = await Parent.findOneAndRemove({ userId: req.params.id });
+    const deletedUser = await User.findByIdAndRemove(req.params.id); //use findById cuz this is main id
+    const parent = await Parent.findOneAndRemove({ userId: req.params.id }); //use fineOne cuz not main id
     const babySitter = await BabySitter.findOneAndRemove({
       userId: req.params.id,
     });
