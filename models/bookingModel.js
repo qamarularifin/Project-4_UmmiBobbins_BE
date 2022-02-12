@@ -17,7 +17,7 @@ const BookingSchema = new mongoose.Schema(
     totalAmount: { type: Number, required: true },
     totalDays: { type: Number, required: true },
     transactionId: { type: String },
-    status: { type: Boolean, required: true, default: false },
+    status: { type: String, required: true, default: "pending" },
   },
   { collection: "booking-data" }
 );
