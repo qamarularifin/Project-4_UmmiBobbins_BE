@@ -72,4 +72,15 @@ router.post("/bookbabysitter", async (req, res) => {
   }
 });
 
+router.post("/getbookingsbyuserid", async (req, res) => {
+  const userId = req.body.userId;
+
+  try {
+    const findParentByUserId = await Parent.findOne({ userId: userId });
+    res.send(findParentByUserId);
+  } catch (error) {
+    return res.status(400).json({ message: error });
+  }
+});
+
 module.exports = router;
