@@ -12,6 +12,7 @@ const BookingSchema = new mongoose.Schema(
       required: true,
       ref: "BabySitter",
     },
+    babySitterName: { type: String, required: true },
     fromDate: { type: String, required: true },
     toDate: { type: String, required: true },
     totalAmount: { type: Number, required: true },

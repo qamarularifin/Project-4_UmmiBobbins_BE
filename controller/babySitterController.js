@@ -36,6 +36,7 @@ router.post("/getbabysitterbyid", async (req, res) => {
   try {
     const babySitter = await BabySitter.findById(babysitterid); //this will return an object related to the id
     // const room = await Room.findOne({ _id: roomid }); //this is another method which is working
+
     res.send(babySitter); //need to res.send so that front end can get the data via axios.post method
   } catch (error) {
     return res.status(400).json({ message: error });

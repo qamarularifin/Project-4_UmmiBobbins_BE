@@ -18,6 +18,7 @@ router.get("/getallbookings", async (req, res) => {
 router.post("/bookbabysitter", async (req, res) => {
   const parentUserId = req.body.parentUserId;
   const babySitterId = req.body.babySitterId;
+  const babySitterName = req.body.babySitterName;
   const fromDate = req.body.fromDate;
   const toDate = req.body.toDate;
   const totalAmount = req.body.totalAmount;
@@ -33,6 +34,7 @@ router.post("/bookbabysitter", async (req, res) => {
     const newBooking = await Booking.create({
       parentId: parentTemp._id.toString(),
       babySitterId: babySitterId,
+      babySitterName: babySitterName,
       fromDate: moment(fromDate).format("DD-MM-YYYY"),
       toDate: moment(toDate).format("DD-MM-YYYY"),
       totalAmount: totalAmount,
@@ -46,6 +48,7 @@ router.post("/bookbabysitter", async (req, res) => {
       toDate: moment(toDate).format("DD-MM-YYYY"),
       parentId: parentTemp._id.toString(),
       babySitterId: babySitterId,
+      babySitterName: babySitterName,
       totalAmount: totalAmount,
       totalDays: totalDays,
       transactionId: transactionId,
@@ -58,6 +61,7 @@ router.post("/bookbabysitter", async (req, res) => {
       toDate: moment(toDate).format("DD-MM-YYYY"),
       parentId: parentTemp._id.toString(),
       babySitterId: babySitterId,
+      babySitterName: babySitterName,
       totalAmount: totalAmount,
       totalDays: totalDays,
       transactionId: transactionId,
@@ -72,12 +76,28 @@ router.post("/bookbabysitter", async (req, res) => {
   }
 });
 
-router.post("/getbookingsbyuserid", async (req, res) => {
+router.post("/getparentbookingsbyuserid", async (req, res) => {
   const userId = req.body.userId;
+  const babySitterId = req.body.babySitterId;
 
   try {
     const findParentByUserId = await Parent.findOne({ userId: userId });
+
     res.send(findParentByUserId);
+  } catch (error) {
+    return res.status(400).json({ message: error });
+  }
+});
+
+router.post("/getbabysitterinfobyid", async (req, res) => {
+  const babySitterId = req.body.babySitterId;
+
+  try {
+    const findBabySitter = await Booking.findOne({
+      babySitterId: babySitterId,
+    });
+    res.send(findBabySitter);
+    console.log("hhh", findBabySitter);
   } catch (error) {
     return res.status(400).json({ message: error });
   }
