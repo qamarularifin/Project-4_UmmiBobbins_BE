@@ -88,4 +88,43 @@ router.post("/getparentbookingsbyuserid", async (req, res) => {
   }
 });
 
+router.post("/deletebooking", async (req, res) => {
+  const bookingId = req.body.bookingId;
+  const parentId = req.body.parentId;
+  const babySitterId = req.body.babySitterId;
+  try {
+    const parent = await Parent.findOne({
+      _id: parentId,
+    });
+
+    const parentBookings = parent.currentBookings;
+    const tempParent = parentBookings.filter(
+      (booking) => booking.bookingId.toString() !== bookingId
+    );
+
+    parent.currentBookings = tempParent;
+    await parent.save();
+
+    ////////////////////
+    ////////////////////
+
+    const babySitter = await BabySitter.findOne({ _id: babySitterId });
+
+    const babySitterBookings = babySitter.currentBookings;
+    const tempBabySitter = babySitterBookings.filter(
+      (booking) => booking.bookingId.toString() !== bookingId
+    );
+    babySitter.currentBookings = tempBabySitter;
+
+    await babySitter.save();
+
+    await Booking.findByIdAndRemove({ _id: bookingId }); //use findById cuz this is main id
+
+    res.send("Booking deleted successfully");
+  } catch (err) {
+    res.status(400).send({ message: "Invalid request body" });
+    return;
+  }
+});
+
 module.exports = router;
