@@ -18,6 +18,13 @@ router.get("/getallbabysitters", async (req, res) => {
   }
 });
 
+// get individual babysitter by id
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  const babySitter = await BabySitter.findById(id);
+  res.send(babySitter);
+});
+
 // create route babysitter
 router.post("/babysitter", async (req, res) => {
   let createdBabySitter;
@@ -84,6 +91,22 @@ router.post("/createbabysitternewprofile", async (req, res) => {
   } catch (error) {
     return res.status(400).json({ message: error });
   }
+});
+
+router.put("/:id/edit", async (req, res) => {
+  let editBabySitter;
+  try {
+    editBabySitter = await BabySitter.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+      }
+    );
+  } catch (err) {
+    res.status(400).send({ message: "Invalid request body" });
+  }
+  res.send(editBabySitter);
 });
 
 //seeding for babysitter
