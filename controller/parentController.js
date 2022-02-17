@@ -21,8 +21,12 @@ router.get("/getallparents", async (req, res) => {
 // get individual parent by id
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  const parent = await Parent.findById(id);
-  res.send(parent);
+  try {
+    const parent = await Parent.findById(id);
+    res.send(parent);
+  } catch (err) {
+    res.status(400).send({ message: "Invalid request body" });
+  }
 });
 
 // create route parent
@@ -100,6 +104,18 @@ router.put("/:id/edit", async (req, res) => {
     res.status(400).send({ message: "Invalid request body" });
   }
   res.send(editParent);
+});
+
+//findparentbyuserid
+router.post("/getparentbyuserid", async (req, res) => {
+  const userId = req.body.userId;
+  try {
+    const parent = await Parent.findOne({ userId: userId });
+
+    res.send(parent);
+  } catch (error) {
+    return res.status(400).json({ message: error });
+  }
 });
 
 //seeding for parent

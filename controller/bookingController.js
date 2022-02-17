@@ -76,6 +76,7 @@ router.post("/bookbabysitter", async (req, res) => {
   }
 });
 
+// get parent bookings by user id
 router.post("/getparentbookingsbyuserid", async (req, res) => {
   const userId = req.body.userId;
 
@@ -83,6 +84,18 @@ router.post("/getparentbookingsbyuserid", async (req, res) => {
     const findParentByUserId = await Parent.findOne({ userId: userId });
 
     res.send(findParentByUserId);
+  } catch (error) {
+    return res.status(400).json({ message: error });
+  }
+});
+
+// get babysitter bookings by user id
+router.post("/getbabysitterbookingsbyuserid", async (req, res) => {
+  const userId = req.body.userId;
+
+  try {
+    const findBabySitterByUserId = await BabySitter.findOne({ userId: userId });
+    res.send(findBabySitterByUserId);
   } catch (error) {
     return res.status(400).json({ message: error });
   }

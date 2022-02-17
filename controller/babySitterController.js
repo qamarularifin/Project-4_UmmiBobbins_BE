@@ -21,8 +21,12 @@ router.get("/getallbabysitters", async (req, res) => {
 // get individual babysitter by id
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  const babySitter = await BabySitter.findById(id);
-  res.send(babySitter);
+  try {
+    const babySitter = await BabySitter.findById(id);
+    res.send(babySitter);
+  } catch (err) {
+    res.status(400).send({ message: "Invalid request body" });
+  }
 });
 
 // create route babysitter
@@ -107,6 +111,18 @@ router.put("/:id/edit", async (req, res) => {
     res.status(400).send({ message: "Invalid request body" });
   }
   res.send(editBabySitter);
+});
+
+//findbabysitterbyuserid
+router.post("/getbabysitterbyuserid", async (req, res) => {
+  const userId = req.body.userId;
+  try {
+    const babySitter = await BabySitter.findOne({ userId: userId });
+
+    res.send(babySitter);
+  } catch (error) {
+    return res.status(400).json({ message: error });
+  }
 });
 
 //seeding for babysitter

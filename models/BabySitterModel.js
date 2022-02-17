@@ -4,8 +4,8 @@ const BabySitterSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Types.ObjectId,
-      required: true,
       ref: "User",
+      required: true,
     },
     name: { type: String, required: true },
     location: { type: String, required: true },
