@@ -15,9 +15,11 @@ router.get("/getallbookings", async (req, res) => {
   }
 });
 
+//perform booking which adds to booking-data, parent-data-currentbooking and babysistter-data-currentbooking
 router.post("/bookbabysitter", async (req, res) => {
   const parentUserId = req.body.parentUserId;
   const babySitterId = req.body.babySitterId;
+  const parentName = req.body.parentName;
   const babySitterName = req.body.babySitterName;
   const fromDate = req.body.fromDate;
   const toDate = req.body.toDate;
@@ -27,13 +29,14 @@ router.post("/bookbabysitter", async (req, res) => {
 
   const parentTemp = await Parent.findOne({ userId: parentUserId });
   const babySitterTemp = await BabySitter.findOne({ _id: babySitterId });
-  console.log("parentTemp", parentTemp);
-  console.log("babysitterTemp", babySitterTemp);
+  //console.log("parentTemp", parentTemp);
+  //console.log("babysitterTemp", babySitterTemp);
 
   try {
     const newBooking = await Booking.create({
       parentId: parentTemp._id.toString(),
       babySitterId: babySitterId,
+      parentName: parentName,
       babySitterName: babySitterName,
       fromDate: moment(fromDate).format("DD-MM-YYYY"),
       toDate: moment(toDate).format("DD-MM-YYYY"),
@@ -48,6 +51,7 @@ router.post("/bookbabysitter", async (req, res) => {
       toDate: moment(toDate).format("DD-MM-YYYY"),
       parentId: parentTemp._id.toString(),
       babySitterId: babySitterId,
+      parentName: parentName,
       babySitterName: babySitterName,
       totalAmount: totalAmount,
       totalDays: totalDays,
@@ -61,6 +65,7 @@ router.post("/bookbabysitter", async (req, res) => {
       toDate: moment(toDate).format("DD-MM-YYYY"),
       parentId: parentTemp._id.toString(),
       babySitterId: babySitterId,
+      parentName: parentName,
       babySitterName: babySitterName,
       totalAmount: totalAmount,
       totalDays: totalDays,
@@ -137,6 +142,46 @@ router.post("/deletebooking", async (req, res) => {
   } catch (err) {
     res.status(400).send({ message: "Invalid request body" });
     return;
+  }
+});
+
+router.post("/cancelbooking", async (req, res) => {
+  const bookingId = req.body.bookingId;
+  const parentId = req.body.parentId;
+  const babySitterId = req.body.babySitterId;
+
+  try {
+    const booking = await Booking.findOne({ _id: bookingId });
+    booking.status = "cancelled";
+    //await booking.save();
+
+    const parent = await Parent.findOne({ _id: parentId });
+    const parentBookings = parent.currentBookings;
+    const tempParent = parentBookings.map((booking) => {
+      if (booking.bookingId.toString() === bookingId) {
+        booking.status = "cancelled";
+        return booking;
+      }
+    });
+
+    //console.log(tempParent);
+
+    parent.currentBookings = tempParent;
+
+    console.log(parent);
+    //await parent.save();
+
+    // const babySitter = await BabySitter.findOne({ _id: babySitterId });
+    // const tempBabySitter = babySitterBookings.filter(
+    //   (booking) => booking.bookingId.toString() !== bookingId
+    // );
+    // babySitter.currentBookings = tempBabySitter;
+
+    // await babySitter.save();
+
+    res.send("Booking cancelled successfully");
+  } catch (error) {
+    res.status(400).send({ message: "Invalid request body" });
   }
 });
 
