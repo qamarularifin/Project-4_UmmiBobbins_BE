@@ -10,7 +10,7 @@ const checkIsUser = require("../middlewares/checkIsUser");
 router.get("/getallbabysitters", async (req, res) => {
   let getBabySitters;
   try {
-    getBabySitters = await BabySitter.find({});
+    getBabySitters = await BabySitter.find({}).populate("currentBookings");
     res.send(getBabySitters);
   } catch (error) {
     res.status(500).send({ message: "Unexpected Error" });

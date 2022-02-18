@@ -45,33 +45,37 @@ router.post("/bookbabysitter", async (req, res) => {
       transactionId: transactionId,
     });
 
-    babySitterTemp.currentBookings.push({
-      bookingId: newBooking._id,
-      fromDate: moment(fromDate).format("DD-MM-YYYY"),
-      toDate: moment(toDate).format("DD-MM-YYYY"),
-      parentId: parentTemp._id.toString(),
-      babySitterId: babySitterId,
-      parentName: parentName,
-      babySitterName: babySitterName,
-      totalAmount: totalAmount,
-      totalDays: totalDays,
-      transactionId: transactionId,
-      status: newBooking.status, //status can put here because the default is set to false. So it overwrites required true condition
-    });
+    babySitterTemp.currentBookings.push(newBooking);
+    parentTemp.currentBookings.push(newBooking);
 
-    parentTemp.currentBookings.push({
-      bookingId: newBooking._id,
-      fromDate: moment(fromDate).format("DD-MM-YYYY"),
-      toDate: moment(toDate).format("DD-MM-YYYY"),
-      parentId: parentTemp._id.toString(),
-      babySitterId: babySitterId,
-      parentName: parentName,
-      babySitterName: babySitterName,
-      totalAmount: totalAmount,
-      totalDays: totalDays,
-      transactionId: transactionId,
-      status: newBooking.status,
-    });
+    //////might not need if use reference/////
+    // babySitterTemp.currentBookings.push({
+    //   bookingId: newBooking._id,
+    //   fromDate: moment(fromDate).format("DD-MM-YYYY"),
+    //   toDate: moment(toDate).format("DD-MM-YYYY"),
+    //   parentId: parentTemp._id.toString(),
+    //   babySitterId: babySitterId,
+    //   parentName: parentName,
+    //   babySitterName: babySitterName,
+    //   totalAmount: totalAmount,
+    //   totalDays: totalDays,
+    //   transactionId: transactionId,
+    //   status: newBooking.status, //status can put here because the default is set to false. So it overwrites required true condition
+    // });
+
+    // parentTemp.currentBookings.push({
+    //   bookingId: newBooking._id,
+    //   fromDate: moment(fromDate).format("DD-MM-YYYY"),
+    //   toDate: moment(toDate).format("DD-MM-YYYY"),
+    //   parentId: parentTemp._id.toString(),
+    //   babySitterId: babySitterId,
+    //   parentName: parentName,
+    //   babySitterName: babySitterName,
+    //   totalAmount: totalAmount,
+    //   totalDays: totalDays,
+    //   transactionId: transactionId,
+    //   status: newBooking.status,
+    // });
 
     await babySitterTemp.save(); //save to database
     await parentTemp.save(); //save to database
@@ -86,7 +90,19 @@ router.post("/getparentbookingsbyuserid", async (req, res) => {
   const userId = req.body.userId;
 
   try {
-    const findParentByUserId = await Parent.findOne({ userId: userId });
+    const findParentByUserId = await Parent.findOne({
+      userId: userId,
+    }).populate("currentBookings");
+
+    console.log("this", findParentByUserId);
+
+    // function getParentByUserId(userId) {
+    //   return Parent.findOne({ userId: userId })
+    //     .populate("parents")
+    //     .exec((err, parents) => {
+    //       console.log("populated parents" + parents);
+    //     });
+    // }
 
     res.send(findParentByUserId);
   } catch (error) {
@@ -169,6 +185,17 @@ router.post("/cancelbooking", async (req, res) => {
     parent.currentBookings = tempParent;
 
     console.log(parent);
+
+    /////
+    /////
+    await Parent.updateOne(
+      { _id: parentId },
+      { $set: { currentBookings: [{ status: "cancelled" }] } }
+    );
+
+    ////
+    ////
+
     //await parent.save();
 
     // const babySitter = await BabySitter.findOne({ _id: babySitterId });

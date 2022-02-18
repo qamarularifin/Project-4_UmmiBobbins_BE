@@ -15,7 +15,9 @@ const BabySitterSchema = new mongoose.Schema(
       required: true,
     },
     image: { type: String },
-    currentBookings: [],
+    currentBookings: [
+      { type: mongoose.Types.ObjectId, ref: "Booking", required: true },
+    ],
   },
   { collection: "babysitter-data" }
 );
