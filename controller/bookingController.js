@@ -119,6 +119,8 @@ router.post("/deletebooking", async (req, res) => {
   const parentId = req.body.parentId;
   const babySitterId = req.body.babySitterId;
   try {
+    await Booking.findByIdAndRemove({ _id: bookingId }); //use findById cuz this is main id
+
     // const parent = await Parent.findOne({
     //   _id: parentId,
     // }).populate("currentBookings");
@@ -128,8 +130,9 @@ router.post("/deletebooking", async (req, res) => {
     //   (booking) => booking.bookingId.toString() !== bookingId
     // );
 
+    // console.log("parentBookings", parentBookings);
     // parent.currentBookings = tempParent;
-    // await parent.save();
+    // //await parent.save();
 
     // ////////////////////
     // ////////////////////
@@ -144,9 +147,7 @@ router.post("/deletebooking", async (req, res) => {
     // );
     // babySitter.currentBookings = tempBabySitter;
 
-    // await babySitter.save();
-
-    await Booking.findByIdAndRemove({ _id: bookingId }); //use findById cuz this is main id
+    //await babySitter.save();
 
     res.send("Booking deleted successfully");
   } catch (err) {

@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const Parent = require("../models/parentModel");
 const BabySitter = require("../models/babySitterModel");
+const Booking = require("../models/bookingModel");
 const SECRET = process.env.SECRET;
 const checkIsUser = require("../middlewares/checkIsUser");
 
@@ -100,14 +101,27 @@ router.post("/dashboard/update-profile/:id", async (req, res) => {
 
 router.delete("/deleteuser/:id", async (req, res) => {
   try {
-    const deletedUser = await User.findByIdAndRemove(req.params.id); //use findById cuz this is main id
+    const deleteUser = await User.findByIdAndRemove(req.params.id); //use findById cuz this is main id
     const parent = await Parent.findOneAndRemove({ userId: req.params.id }); //use fineOne cuz not main id
     const babySitter = await BabySitter.findOneAndRemove({
       userId: req.params.id,
     });
-    //work on deleting booking related to deleted user
 
-    res.send({ deletedUser, parent, babySitter });
+    // //work on deleting booking related to deleted user
+    // const parent = await Parent.findOne({
+    //   userId: req.params.id,
+    // }).populate("currentBookings");
+    // //console.log("fff", parentBookings.currentBookings[0]._id);
+
+    // parentBookings = parent.currentBookings;
+    // const tempParent = parentBookings.map(async (booking) => {
+    //   if (booking._id.toString() === booking._id) {
+    //     await Booking.findOneAndRemove({ _id: booking._id });
+    //   }
+    // });
+    // console.log("ggg", tempParent);
+
+    res.send({ deleteUser, parent, babySitter });
   } catch (err) {
     res.status(400).send({ message: "Invalid request body" });
     return;
