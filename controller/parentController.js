@@ -10,7 +10,7 @@ const checkIsUser = require("../middlewares/checkIsUser");
 router.get("/getallparents", async (req, res) => {
   let getParents;
   try {
-    getParents = await Parent.find({}).populate("Parent");
+    getParents = await Parent.find({});
     res.send(getParents);
   } catch (err) {
     res.status(400).send({ message: "Invalid request body" });
