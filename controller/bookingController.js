@@ -119,30 +119,32 @@ router.post("/deletebooking", async (req, res) => {
   const parentId = req.body.parentId;
   const babySitterId = req.body.babySitterId;
   try {
-    const parent = await Parent.findOne({
-      _id: parentId,
-    });
+    // const parent = await Parent.findOne({
+    //   _id: parentId,
+    // }).populate("currentBookings");
 
-    const parentBookings = parent.currentBookings;
-    const tempParent = parentBookings.filter(
-      (booking) => booking.bookingId.toString() !== bookingId
-    );
+    // const parentBookings = parent.currentBookings;
+    // const tempParent = parentBookings.filter(
+    //   (booking) => booking.bookingId.toString() !== bookingId
+    // );
 
-    parent.currentBookings = tempParent;
-    await parent.save();
+    // parent.currentBookings = tempParent;
+    // await parent.save();
 
-    ////////////////////
-    ////////////////////
+    // ////////////////////
+    // ////////////////////
 
-    const babySitter = await BabySitter.findOne({ _id: babySitterId });
+    // const babySitter = await BabySitter.findOne({ _id: babySitterId }).populate(
+    //   "currentBookings"
+    // );
 
-    const babySitterBookings = babySitter.currentBookings;
-    const tempBabySitter = babySitterBookings.filter(
-      (booking) => booking.bookingId.toString() !== bookingId
-    );
-    babySitter.currentBookings = tempBabySitter;
+    // const babySitterBookings = babySitter.currentBookings;
+    // const tempBabySitter = babySitterBookings.filter(
+    //   (booking) => booking.bookingId.toString() !== bookingId
+    // );
+    // babySitter.currentBookings = tempBabySitter;
 
-    await babySitter.save();
+    // await babySitter.save();
 
     await Booking.findByIdAndRemove({ _id: bookingId }); //use findById cuz this is main id
 
@@ -155,50 +157,26 @@ router.post("/deletebooking", async (req, res) => {
 
 router.post("/cancelbooking", async (req, res) => {
   const bookingId = req.body.bookingId;
-  const parentId = req.body.parentId;
-  const babySitterId = req.body.babySitterId;
 
   try {
     const booking = await Booking.findOne({ _id: bookingId });
     booking.status = "cancelled";
-    //await booking.save();
-
-    const parent = await Parent.findOne({ _id: parentId });
-    const parentBookings = parent.currentBookings;
-    const tempParent = parentBookings.map((booking) => {
-      if (booking.bookingId.toString() === bookingId) {
-        booking.status = "cancelled";
-        return booking;
-      }
-    });
-
-    //console.log(tempParent);
-
-    parent.currentBookings = tempParent;
-
-    console.log(parent);
-
-    /////
-    /////
-    await Parent.updateOne(
-      { _id: parentId },
-      { $set: { currentBookings: [{ status: "cancelled" }] } }
-    );
-
-    ////
-    ////
-
-    //await parent.save();
-
-    // const babySitter = await BabySitter.findOne({ _id: babySitterId });
-    // const tempBabySitter = babySitterBookings.filter(
-    //   (booking) => booking.bookingId.toString() !== bookingId
-    // );
-    // babySitter.currentBookings = tempBabySitter;
-
-    // await babySitter.save();
+    await booking.save();
 
     res.send("Booking cancelled successfully");
+  } catch (error) {
+    res.status(400).send({ message: "Invalid request body" });
+  }
+});
+
+router.post("/confirmbooking", async (req, res) => {
+  const bookingId = req.body.bookingId;
+
+  try {
+    const booking = await Booking.findOne({ _id: bookingId });
+    booking.status = "confirmed";
+    await booking.save();
+    res.send("Booking confirmed successfully");
   } catch (error) {
     res.status(400).send({ message: "Invalid request body" });
   }

@@ -105,6 +105,7 @@ router.delete("/deleteuser/:id", async (req, res) => {
     const babySitter = await BabySitter.findOneAndRemove({
       userId: req.params.id,
     });
+    //work on deleting booking related to deleted user
 
     res.send({ deletedUser, parent, babySitter });
   } catch (err) {
