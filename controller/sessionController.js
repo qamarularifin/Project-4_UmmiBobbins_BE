@@ -10,8 +10,6 @@ router.post("/login", async (req, res) => {
     //password: req.body.password // with this will not work for login
   });
 
-  console.log("eeee", user);
-
   if (!user) {
     return res.json({ status: "error", error: "Invalid login" });
   }
