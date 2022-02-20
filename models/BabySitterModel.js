@@ -8,7 +8,7 @@ const BabySitterSchema = new mongoose.Schema(
       required: true,
     },
     name: { type: String, required: true },
-    location: { type: String, required: true },
+    location: { type: Number, required: true },
     description: { type: String, required: true },
     ratePerDay: {
       type: Number,
