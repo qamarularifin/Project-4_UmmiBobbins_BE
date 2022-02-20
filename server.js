@@ -91,7 +91,7 @@ io.on("connection", (socket) => {
 // connect to mongoose
 mongoose.connect(MONGO_URL).then(async () => {
   console.log("database connected");
-  server.listen(PORT, () => {
+  app.listen(PORT, () => {
     console.log("listening on", PORT);
   });
 });
