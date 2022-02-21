@@ -5,27 +5,12 @@ const cors = require("cors");
 require("dotenv").config();
 const session = require("express-session");
 //const CORS_WHITELIST = process.env.CORS_WHITELIST.split(',') //deployment doesnt work with this
-const http = require("http"); // for socket io
-const { Server } = require("socket.io"); // for socket io
 
 app.use(cors());
 // app.use(cors({
 //   origin: CORS_WHITELIST  // deployment doesnt work with this
 // }));
 app.use(express.json());
-
-const server = http.createServer(app); // for socket io
-const io = new Server(server, {
-  cors: {
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:3001",
-      "http://localhost:3002",
-      "https://project-4-ummibobbins-fe.herokuapp.com",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-  },
-});
 
 // SESSION MIDDLEWARE
 // Need to be at most top so that all app.use middlewares below it is applicable
@@ -62,36 +47,10 @@ app.use("/babysitter/api", babySitterController);
 const bookingController = require("./controller/bookingController");
 app.use("/booking/api", bookingController);
 
-// socket io////////////////////////
-//////////////
-//listen for events
-io.on("connection", (socket) => {
-  console.log(`User connected: ${socket.id}`);
-
-  //listen for frontend input of data which is room
-  socket.on("join_room", (data) => {
-    socket.join(data);
-    console.log(`User with ID: ${socket.id} joined room: ${data}`);
-  });
-
-  //listens for data sent (socket.on) from frontend
-  //and send data (socket.to) back to frontend
-  socket.on("send_message", (data) => {
-    socket.to(data.room).emit("receive_message", data);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("User Disconnected", socket.id);
-  });
-});
-
-///////
-/////////////////////////////////
-
-// connect to mongoose  // server is using socket.io // normal is app
+// connect to mongoose
 mongoose.connect(MONGO_URL).then(async () => {
   console.log("database connected");
-  server.listen(PORT, () => {
+  app.listen(PORT, () => {
     console.log("listening on", PORT);
   });
 });
