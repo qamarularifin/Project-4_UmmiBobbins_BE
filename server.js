@@ -5,8 +5,8 @@ const cors = require("cors");
 require("dotenv").config();
 const session = require("express-session");
 //const CORS_WHITELIST = process.env.CORS_WHITELIST.split(',') //deployment doesnt work with this
-const http = require("http");
-const { Server } = require("socket.io");
+const http = require("http"); // for socket io
+const { Server } = require("socket.io"); // for socket io
 
 app.use(cors());
 // app.use(cors({
@@ -14,7 +14,7 @@ app.use(cors());
 // }));
 app.use(express.json());
 
-const server = http.createServer(app);
+const server = http.createServer(app); // for socket io
 const io = new Server(server, {
   cors: {
     origin: [
@@ -88,7 +88,7 @@ io.on("connection", (socket) => {
 ///////
 /////////////////////////////////
 
-// connect to mongoose
+// connect to mongoose  // server is using socket.io // normal is app
 mongoose.connect(MONGO_URL).then(async () => {
   console.log("database connected");
   server.listen(PORT, () => {
