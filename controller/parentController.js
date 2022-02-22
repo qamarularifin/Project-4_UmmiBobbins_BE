@@ -100,10 +100,10 @@ router.put("/:id/edit", async (req, res) => {
     editParent = await Parent.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
+    res.send(editParent);
   } catch (err) {
     res.status(400).send({ message: "Invalid request body" });
   }
-  res.send(editParent);
 });
 
 //findparentbyuserid
