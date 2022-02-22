@@ -94,7 +94,7 @@ router.post("/createparentnewprofile", async (req, res) => {
   }
 });
 
-router.put("/:id/edit", async (req, res) => {
+router.post("/:id/edit", async (req, res) => {
   let editParent;
   try {
     editParent = await Parent.findByIdAndUpdate(req.params.id, req.body, {
