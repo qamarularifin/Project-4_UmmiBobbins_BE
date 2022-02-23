@@ -11,6 +11,7 @@ const ParentSchema = new mongoose.Schema(
     location: { type: Number, required: true },
     description: { type: String, required: true },
     image: { type: String },
+    messages: [String],
     currentBookings: [
       { type: mongoose.Types.ObjectId, ref: "Booking", required: true },
     ],
