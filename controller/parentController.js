@@ -119,7 +119,7 @@ router.post("/getparentbyuserid", async (req, res) => {
   }
 });
 
-router.post("/getmessagefrombabysitter", async (req, res) => {
+router.post("/sendmessagetoparent", async (req, res) => {
   const id = req.body.id;
   //const babySitterUserId = req.body.babySitterUserId;
   const messages = req.body.messages;
