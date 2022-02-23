@@ -138,10 +138,10 @@ router.post("/sendmessagetoparent", async (req, res) => {
 });
 
 router.post("/getmessagefrombabysitter", async (req, res) => {
-  const id = req.body.id;
+  const userId = req.body.userId;
 
   try {
-    const parentMessages = await Parent.findById(id);
+    const parentMessages = await Parent.findOne({ userId: userId });
     res.send(parentMessages);
   } catch (error) {
     return res.status(400).json({ message: error });
