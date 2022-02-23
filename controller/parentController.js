@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const Parent = require("../models/parentModel");
+const BabySitter = require("../models/babySitterModel");
 const SECRET = process.env.SECRET;
 const checkIsUser = require("../middlewares/checkIsUser");
 
@@ -113,6 +114,23 @@ router.post("/getparentbyuserid", async (req, res) => {
     const parent = await Parent.findOne({ userId: userId });
 
     res.send(parent);
+  } catch (error) {
+    return res.status(400).json({ message: error });
+  }
+});
+
+router.post("/getmessagefrombabysitter", async (req, res) => {
+  const id = req.body.id;
+  //const babySitterUserId = req.body.babySitterUserId;
+  const messages = req.body.messages;
+
+  try {
+    const parent = await Parent.findById(id);
+    //const babySitter = await BabySitter.findOne({ userId: babySitterUserId });
+
+    parent.messages.push(messages);
+    await parent.save();
+    console.log("fff", parent);
   } catch (error) {
     return res.status(400).json({ message: error });
   }
