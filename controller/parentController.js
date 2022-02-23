@@ -130,7 +130,7 @@ router.post("/getmessagefrombabysitter", async (req, res) => {
 
     parent.messages.push(messages);
     await parent.save();
-    console.log("fff", parent);
+    // console.log("fff", parent);
   } catch (error) {
     return res.status(400).json({ message: error });
   }
