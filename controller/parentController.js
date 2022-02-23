@@ -142,7 +142,7 @@ router.post("/getmessagefrombabysitter", async (req, res) => {
 
   try {
     const parentMessages = await Parent.findOne({ userId: userId });
-    res.send(parentMessages);
+    res.send(parentMessages.messages);
   } catch (error) {
     return res.status(400).json({ message: error });
   }
