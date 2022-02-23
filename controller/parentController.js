@@ -137,6 +137,17 @@ router.post("/sendmessagetoparent", async (req, res) => {
   }
 });
 
+router.post("/getmessagefrombabysitter", async (req, res) => {
+  const id = req.body.id;
+
+  try {
+    const parentMessages = await Parent.findById(id);
+    res.send(parentMessages);
+  } catch (error) {
+    return res.status(400).json({ message: error });
+  }
+});
+
 //seeding for parent
 router.post("/seed", async (req, res) => {
   let seedItems;
