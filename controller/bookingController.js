@@ -58,6 +58,7 @@ router.post("/bookbabysitter", async (req, res) => {
         babySitterId: babySitterId,
         parentName: parentName,
         babySitterName: babySitterName,
+        //need to add => .add(1,"days") since heroku is one day earlier
         fromDate: moment(fromDate).add(1, "days").format("DD-MM-YYYY"),
         toDate: moment(toDate).add(1, "days").format("DD-MM-YYYY"),
         totalAmount: totalAmount,
