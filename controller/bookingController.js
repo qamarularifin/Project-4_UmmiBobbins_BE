@@ -70,7 +70,8 @@ router.post("/bookbabysitter", async (req, res) => {
 
       await babySitterTemp.save(); //save to database
       await parentTemp.save(); //save to database
-      res.send(newBooking); // send to Preview in network
+      //cannot put below will cause UnhandledPromiseRejectionWarning: Error [ERR_HTTP_HEADERS_SENT]
+      //res.send(newBooking); // send to Preview in network
     }
 
     res.send("Payment Successful. Your room is booked");
