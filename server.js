@@ -7,6 +7,7 @@ const session = require("express-session");
 //const CORS_WHITELIST = process.env.CORS_WHITELIST.split(',') //deployment doesnt work with this
 
 app.use(cors());
+// !!!uncomment all cors to use local
 // app.use(cors({
 //   origin: CORS_WHITELIST  // deployment doesnt work with this
 // }));
